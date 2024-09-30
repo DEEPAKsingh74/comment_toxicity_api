@@ -4,21 +4,28 @@ import numpy as np
 from utils.preprocess_text import TextPreprocessor
 import os
 import gdown
+import zipfile  # Import zipfile if your model is in a zip file
 
 app = Flask(__name__)
 
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-
 class ToxicityModelAPI:
     def __init__(self, model_path, tokenizer_path, max_pad_len):
+        # Download and load the model when initializing
         self.model = self.load_model(model_path)
         self.text_preprocessor = TextPreprocessor(tokenizer_path, max_pad_len)
 
     def load_model(self, model_path):
-        os.makedirs("models", exists_ok=True)
-        url = "https://drive.google.com/uc?export=download&id=1hGhAbTFSxF-u2_uRrVk0jetp_vsqBw_U"
-        gdown.download(url, model_path, quiet=False)
+        # Ensure the models directory exists
+        os.makedirs("models", exist_ok=True)
+        
+        # Download the model if it doesn't exist
+        if not os.path.exists(model_path):
+            url = "https://drive.google.com/uc?export=download&id=1hGhAbTFSxF-u2_uRrVk0jetp_vsqBw_U"
+            gdown.download(url, model_path, quiet=False)
+
+        # Load the model
         model = tf.keras.models.load_model(model_path)
         return model
 
@@ -42,9 +49,9 @@ class ToxicityModelAPI:
 
 
 # Initialize the API object with paths and parameters
-model_path = 'models/comment_tox_model.keras'          # Path to your trained model
-tokenizer_path = 'tokenizer/tokenizer.pkl'             # Path to your saved tokenizer
-max_pad_len = 300                               # Should match the value used during training
+model_path = 'models/comment_tox_model.keras'  # Path to your trained model
+tokenizer_path = 'tokenizer/tokenizer.pkl'  # Path to your saved tokenizer
+max_pad_len = 300  # Should match the value used during training
 
 toxicity_api = ToxicityModelAPI(model_path, tokenizer_path, max_pad_len)
 
