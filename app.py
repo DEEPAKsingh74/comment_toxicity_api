@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 from utils.preprocess_text import TextPreprocessor
 import os
+import gdown
 
 app = Flask(__name__)
 
@@ -15,6 +16,9 @@ class ToxicityModelAPI:
         self.text_preprocessor = TextPreprocessor(tokenizer_path, max_pad_len)
 
     def load_model(self, model_path):
+        os.makedirs("models", exists_ok=True)
+        url = "https://drive.google.com/uc?export=download&id=1hGhAbTFSxF-u2_uRrVk0jetp_vsqBw_U"
+        gdown.download(url, model_path, quiet=False)
         model = tf.keras.models.load_model(model_path)
         return model
 
