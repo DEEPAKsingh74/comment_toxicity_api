@@ -1,5 +1,9 @@
-nltk
-tensorflow
-numpy
-flask
-gdown
+gdown==5.2.0
+numpy==1.26.4
+Flask==3.0.3
+Flask-Cors==5.0.0
+keras==3.5.0
+nltk==3.9.1
+pandas==2.2.3
+regex==2024.9.11
+urllib3==2.2.3
