@@ -1,9 +1,6 @@
 {
   "build": {
-    "dockerfile": "Dockerfile"  // Ensure you have a Dockerfile in the root of your project
-  },
-  "env": {
-    "MODEL_PATH": "models/comment_tox_model.keras"  // Environment variable for model path
+    "dockerfile": "Dockerfile" 
   },
   "deploy": {
     "files": [
